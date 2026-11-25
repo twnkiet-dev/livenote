@@ -1,0 +1,62 @@
+name: LiveNote
+options:
+  deploymentTarget:
+    iOS: '16.2'
+settings:
+  base:
+    SWIFT_VERSION: '5.0'
+    MARKETING_VERSION: '1.0'
+    CURRENT_PROJECT_VERSION: '1'
+    TARGETED_DEVICE_FAMILY: '1'
+    CODE_SIGN_STYLE: Automatic
+targets:
+  LiveNote:
+    type: application
+    platform: iOS
+    sources:
+      - App
+      - Shared
+    info:
+      path: Generated/App-Info.plist
+      properties:
+        CFBundleDisplayName: LiveNote
+        NSSupportsLiveActivities: true
+        UILaunchScreen: {}
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.personal.livenote
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS: '$(inherited) SIDELOAD_AUTO_HOME'
+    dependencies:
+      - target: LiveNoteWidget
+        embed: true
+  LiveNoteWidget:
+    type: app-extension
+    platform: iOS
+    sources:
+      - Widget
+      - Shared
+    info:
+      path: Generated/Widget-Info.plist
+      properties:
+        CFBundleDisplayName: LiveNote
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.personal.livenote.widget
+        APPLICATION_EXTENSION_API_ONLY: YES
+        SKIP_INSTALL: YES
+schemes:
+  LiveNote:
+    build:
+      targets:
+        LiveNote: all
+    run:
+      config: Debug
+    archive:
+      config: Release

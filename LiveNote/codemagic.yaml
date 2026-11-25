@@ -1,0 +1,19 @@
+workflows:
+  livenote-ios-unsigned:
+    name: LiveNote - IPA for sideload (unsigned)
+    instance_type: mac_mini_m2
+    max_build_duration: 30
+    environment:
+      xcode: latest
+    scripts:
+      - name: Generate Xcode project
+        script: |
+          set -euo pipefail
+          command -v xcodegen >/dev/null || brew install xcodegen
+          xcodegen generate
+      - name: Build and package unsigned IPA
+        script: |
+          bash scripts/build-unsigned.sh
+    artifacts:
+      - build/LiveNote.ipa
+      - build/xcodebuild.log
